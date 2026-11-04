@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مدیریت ویژگی‌های محصول | داشبورد مدیریت EzMart</title>
+    <!-- Tailwind CSS with custom colors -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Vazirmatn', 'Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+              mono: ['Plus Jakarta Sans', 'monospace']
+            },
+            colors: {
+              brand: {
+                50: '#fff7ed',
+                100: '#ffedd5',
+                200: '#fed7aa',
+                500: '#f97316',
+                600: '#ea580c',
+                700: '#c2410c',
+              },
+              surface: {
+                bg: '#EBE5DF',
+                card: '#FFFFFF',
+                border: '#F0ECE6',
+                subtle: '#FAF8F5'
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        background-color: #EBE5DF;
+        font-family: 'Vazirmatn', sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      ::-webkit-scrollbar {
+        width: 4px;
+        height: 4px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #e2d9cf;
+        border-radius: 9999px;
+      }
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen text-slate-800 bg-[#EBE5DF]">
+    <div class="w-full bg-[#FAF8F5] py-6 lg:py-7 pl-6 lg:pl-7 pr-0 flex flex-row gap-6 items-start min-h-screen">
+      
+      <!-- ============ BEGIN: Sidebar Navigation (Sticky) ============ -->
+      <aside class="w-64 bg-transparent flex flex-col shrink-0 border-r border-stone-200/70 sticky top-4 h-[calc(100vh-2rem)]">
+        <div class="shrink-0 pb-4 px-3">
+          <div class="flex items-center gap-3 px-3 py-2">
+            <div class="w-8 h-8 rounded-lg bg-brand-500 flex items-center justify-center text-white font-black text-lg shadow-sm">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+              </svg>
+            </div>
+            <div>
+              <span class="text-lg font-extrabold text-stone-900 tracking-tight">EzMart <span class="text-xs font-semibold text-brand-500">شیک‌پوش</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] px-3">
+          <nav class="space-y-1 pb-6 text-xs font-medium text-stone-600">
+            <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl hover:bg-stone-200/50 hover:text-stone-900 transition" href="#">
+              <svg class="w-4 h-4 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg>
+              <span>داشبورد</span>
+            </a>
+
+            <!-- محصولات (آکاردیونی) -->
+            <div class="flex flex-col rounded-xl bg-stone-200/40 overflow-hidden">
+              <button type="button" onclick="toggleAccordion('products-menu', 'products-icon')" class="w-full flex items-center justify-between px-3.5 py-2.5 text-stone-900 font-bold cursor-pointer focus:outline-none">
+                <div class="flex items-center gap-3">
+                  <svg class="w-4 h-4 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                  </svg>
+                  <span>محصولات</span>
+                </div>
+                <svg id="products-icon" class="w-4 h-4 text-stone-500 transform transition-transform duration-200 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                </svg>
+              </button>
+              <div id="products-menu" class="flex flex-col pr-6 pl-2 pb-2 gap-1">
+                <a class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-stone-200/50 hover:text-stone-900 transition" href="#">همه محصولات</a>
+                <a class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-stone-200/50 hover:text-stone-900 transition" href="#">افزودن محصول</a>
+                <a class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-stone-200/50 hover:text-stone-900 transition" href="#">دسته بندی ها</a>
+                <a class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-stone-200/50 hover:text-stone-900 transition" href="#">تگ ها</a>
+                <a aria-current="page" class="flex items-center gap-2 px-3 py-2 rounded-lg bg-brand-500 text-white font-bold transition shadow-sm" href="#">ویژگی های محصول</a>
+                <a class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-stone-200/50 hover:text-stone-900 transition" href="#">کامنت ها</a>
+                <a class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-stone-200/50 hover:text-stone-900 transition" href="#">سایز بندی</a>
+              </div>
+            </div>
+
+            <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl hover:bg-stone-200/50 hover:text-stone-900 transition" href="#">
+              <svg class="w-4 h-4 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg>
+              <span>انبارداری</span>
+            </a>
+            <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl hover:bg-stone-200/50 hover:text-stone-900 transition" href="#">
+              <svg class="w-4 h-4 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg>
+              <span>سفارشات</span>
+            </a>
+            <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl hover:bg-stone-200/50 hover:text-stone-900 transition" href="#">
+              <svg class="w-4 h-4 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg>
+              <span>مشتریان</span>
+            </a>
+
+            <!-- وبلاگ (آکاردیونی) -->
+            <div class="flex flex-col rounded-xl bg-stone-200/40 overflow-hidden">
+              <button type="button" onclick="toggleAccordion('blog-menu', 'blog-icon')" class="w-full flex items-center justify-between px-3.5 py-2.5 text-stone-900 font-bold cursor-pointer focus:outline-none">
+                <div class="flex items-center gap-3">
+                  <svg class="w-4 h-4 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                  </svg>
+                  <span>وبلاگ</span>
+                </div>
+                <svg id="blog-icon" class="w-4 h-4 text-stone-500 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                </svg>
+              </button>
+              <div id="blog-menu" class="hidden flex flex-col pr-6 pl-2 pb-2 gap-1">
+                <a class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-stone-200/50 hover:text-stone-900 transition" href="#">همه وبلاگ ها</a>
+                <a class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-stone-200/50 hover:text-stone-900 transition" href="#">افزودن وبلاگ</a>
+                <a class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-stone-200/50 hover:text-stone-900 transition" href="#">دسته بندی</a>
+                <a class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-stone-200/50 hover:text-stone-900 transition" href="#">تگ ها</a>
+                <a class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-stone-200/50 hover:text-stone-900 transition" href="#">کامنت ها</a>
+              </div>
+            </div>
+
+            <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl hover:bg-stone-200/50 hover:text-stone-900 transition" href="#">
+              <svg class="w-4 h-4 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg>
+              <span>گزارشات</span>
+            </a>
+            <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl hover:bg-stone-200/50 hover:text-stone-900 transition" href="#">
+              <svg class="w-4 h-4 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg>
+              <span>تخفیف ها</span>
+            </a>
+            <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl hover:bg-stone-200/50 hover:text-stone-900 transition" href="#">
+              <svg class="w-4 h-4 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg>
+              <span>تنظیمات</span>
+            </a>
+          </nav>
+        </div>
+      </aside>
+      <!-- ============ END: Sidebar Navigation ============ -->
+
+      <!-- Main Content Area -->
+      <main class="flex-1 min-w-0 flex flex-col gap-5 pl-6 lg:pl-7">
+        
+        <!-- ============ BEGIN: Header Navigation Bar ============ -->
+        <header class="flex items-center justify-between py-5 sticky top-0 bg-[#FAF8F5]/80 backdrop-blur-md z-20 border-b border-stone-200/50">
+          <div>
+            <div class="relative w-72 lg:w-80">
+              <input class="w-full pr-10 pl-4 py-2 text-xs rounded-full bg-white border border-stone-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 placeholder-stone-400 shadow-sm" placeholder="جستجوی موجودی، سفارش و..." type="text"/>
+              <div class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-stone-400">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2">
+              <button type="button" title="پیام‌ها" class="relative w-9 h-9 rounded-full bg-white border border-stone-200 flex items-center justify-center text-stone-600 hover:bg-stone-50 transition shadow-sm">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path>
+                </svg>
+              </button>
+              <button type="button" title="اعلان‌ها" class="relative w-9 h-9 rounded-full bg-white border border-stone-200 flex items-center justify-center text-stone-600 hover:bg-stone-50 transition shadow-sm">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path>
+                </svg>
+                <span class="absolute top-1.5 left-1.5 w-2 h-2 bg-brand-500 rounded-full ring-2 ring-white"></span>
+              </button>
+            </div>
+            <div class="flex items-center gap-3 pr-2 border-r border-stone-200">
+              <img alt="پروفایل مدیر" class="w-9 h-9 rounded-full object-cover ring-2 ring-stone-100" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiNE1J-17hM-fLueXj_0jkVDpR-MaKSnjxCDQbcf5sIAD7cGzJYtg5N8ne2BLDFeQHN-NMlA5oHCglkEhw4tsDah8aTxl0H0xcr7TpUxgSj6rAW2oe0VSxjY71XLg7htBZNbZoCGqeFdTxV95Udjyh_yjQ6gvHXtnolTHD4_mcC01YcnR7vrbvPzNbIy_BeUexj6vvTsYQa5qX7Octh-X4fO5oDgKlVHZWUpNMJh50a95WBkajhFbi"/>
+              <div class="flex flex-col text-right">
+                <span class="text-xs font-bold text-stone-800 leading-tight">مارکوس جورج</span>
+                <span class="text-[10px] text-stone-400 font-medium">مدیر ارشد فروش</span>
+              </div>
+              <svg class="w-3.5 h-3.5 text-stone-400 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg>
+            </div>
+          </div>
+        </header>
+        <!-- ============ END: Header Navigation Bar ============ -->
+
+        <!-- ============ BEGIN: ATTRIBUTES PAGE CONTENT ============ -->
+        <div class="flex flex-col gap-6 pt-2">
+          
+          <!-- 1. Header & Action Bar -->
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-stone-100 shadow-sm">
+            <div>
+              <h1 class="text-xl font-extrabold text-stone-900 tracking-tight flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-brand-500 inline-block"></span>
+                مدیریت ویژگی‌های محصول (Attributes)
+              </h1>
+            </div>
+            
+            <div class="flex items-center gap-3">
+              <!-- Bulk Operations Dropdown (Updated with Change Display Type Submenu) -->
+              <div class="relative inline-block text-right">
+                <button type="button" onclick="toggleBulkDropdown()" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-stone-100 text-stone-700 hover:bg-stone-200/80 font-bold text-xs transition shadow-sm border border-stone-200">
+                  <span class="material-symbols-outlined text-[18px]">tune</span>
+                  <span>عملیات گروهی</span>
+                  <span class="material-symbols-outlined text-[16px]">expand_more</span>
+                </button>
+                <div id="bulk-dropdown-menu" class="hidden absolute left-0 mt-2 w-56 rounded-xl bg-white shadow-lg border border-stone-100 py-1.5 z-30">
+                  <a href="#" onclick="alert('حذف گروهی انتخاب شد'); return false;" class="flex items-center gap-2 px-4 py-2 text-xs font-medium text-rose-600 hover:bg-rose-50 transition">
+                    <span class="material-symbols-outlined text-[16px]">delete</span>
+                    <span>حذف گروهی</span>
+                  </a>
+                  <a href="#" onclick="alert('تغییر وضعیت فعال/غیرفعال انتخاب شد'); return false;" class="flex items-center gap-2 px-4 py-2 text-xs font-medium text-stone-700 hover:bg-stone-50 transition">
+                    <span class="material-symbols-outlined text-[16px]">toggle_on</span>
+                    <span>تغییر وضعیت</span>
+                  </a>
+                  <!-- Change Display Type Sub-dropdown item -->
+                  <div class="relative group/sub">
+                    <div class="flex items-center justify-between px-4 py-2 text-xs font-medium text-stone-700 hover:bg-stone-50 transition cursor-pointer" onclick="toggleBulkSubMenu(event)">
+                      <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[16px]">style</span>
+                        <span>تغییر نوع نمایش به</span>
+                      </div>
+                      <span class="material-symbols-outlined text-[14px] text-stone-400">chevron_left</span>
+                    </div>
+                    <!-- Sub-menu popup -->
+                    <div id="bulk-display-submenu" class="hidden absolute right-full top-0 ml-1 w-40 rounded-xl bg-white shadow-lg border border-stone-100 py-1.5 z-40">
+                      <a href="#" onclick="alert('نوع نمایش تغییر یافت به: دکمه‌ای'); toggleBulkDropdown(); return false;" class="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-stone-700 hover:bg-stone-50 transition">
+                        <span class="material-symbols-outlined text-[14px]">font_download</span>
+                        <span>دکمه‌ای</span>
+                      </a>
+                      <a href="#" onclick="alert('نوع نمایش تغییر یافت به: رنگی'); toggleBulkDropdown(); return false;" class="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-stone-700 hover:bg-stone-50 transition">
+                        <span class="material-symbols-outlined text-[14px]">palette</span>
+                        <span>رنگی</span>
+                      </a>
+                      <a href="#" onclick="alert('نوع نمایش تغییر یافت به: کشویی'); toggleBulkDropdown(); return false;" class="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-stone-700 hover:bg-stone-50 transition">
+                        <span class="material-symbols-outlined text-[14px]">arrow_drop_down_circle</span>
+                        <span>کشویی</span>
+                      </a>
+                    </div>
+                  </div>
+                  <a href="#" onclick="alert('خروجی اکسل/CSV انتخاب شد'); return false;" class="flex items-center gap-2 px-4 py-2 text-xs font-medium text-stone-700 hover:bg-stone-50 transition border-t border-stone-100 mt-1 pt-1.5">
+                    <span class="material-symbols-outlined text-[16px]">download</span>
+                    <span>خروجی اکسل/CSV</span>
+                  </a>
+                </div>
+              </div>
+
+              <!-- CTA: Add New Attribute -->
+              <button type="button" onclick="focusForm()" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-bold text-xs transition shadow-md shadow-brand-500/20">
+                <span class="material-symbols-outlined text-[18px]">add_circle</span>
+                <span>افزودن ویژگی جدید</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 2. KPI Cards (Top Stats) -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <!-- KPI 1 -->
+            <div class="bg-white rounded-2xl p-4 border border-stone-100 flex items-center justify-between shadow-sm">
+              <div class="flex items-center gap-3.5">
+                <div class="w-11 h-11 rounded-xl bg-orange-50 text-brand-500 flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-[24px]">tune</span>
+                </div>
+                <div>
+                  <span class="text-xs font-medium text-stone-500 block mb-0.5">کل ویژگی‌های ساخته‌شده</span>
+                  <div class="text-lg font-black text-stone-900 tracking-tight">۸ ویژگی اصلی <span class="text-xs font-semibold text-stone-400 font-normal">(/۴۵ مقدار ثبت‌شده)</span></div>
+                </div>
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold">فعال</span>
+            </div>
+
+            <!-- KPI 2 -->
+            <div class="bg-white rounded-2xl p-4 border border-stone-100 flex items-center justify-between shadow-sm">
+              <div class="flex items-center gap-3.5">
+                <div class="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-[24px]">local_fire_department</span>
+                </div>
+                <div>
+                  <span class="text-xs font-medium text-stone-500 block mb-0.5">پراستفاده‌ترین ویژگی</span>
+                  <div class="text-lg font-black text-stone-900 tracking-tight">جنس پارچه</div>
+                </div>
+              </div>
+              <span class="px-2 py-0.5 rounded-lg bg-amber-100 text-amber-800 text-[11px] font-bold">۱۴۲ محصول مرتبط</span>
+            </div>
+
+            <!-- KPI 3 -->
+            <div class="bg-white rounded-2xl p-4 border border-stone-100 flex items-center justify-between shadow-sm">
+              <div class="flex items-center gap-3.5">
+                <div class="w-11 h-11 rounded-xl bg-rose-50 text-rose-500 flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-[24px]">warning</span>
+                </div>
+                <div>
+                  <span class="text-xs font-medium text-stone-500 block mb-0.5">ویژگی‌های بدون مقدار</span>
+                  <div class="text-lg font-black text-stone-900 tracking-tight">۱ ویژگی</div>
+                </div>
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-rose-100 text-rose-700 text-[10px] font-bold">بررسی</span>
+            </div>
+          </div>
+
+          <!-- 3. Main Two-Column Layout (Adjusted Form Width: col-span-4 / col-span-8) -->
+          <div class="grid grid-cols-12 gap-6 items-start">
+            
+            <!-- RIGHT COLUMN: Add/Edit Attribute Form (col-span-12 lg:col-span-4 matching tags page width) -->
+            <div class="col-span-12 lg:col-span-4 bg-white rounded-2xl p-5 border border-stone-100 shadow-sm sticky top-24">
+              <div class="flex items-center justify-between pb-3 border-b border-stone-100 mb-4">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-brand-500 text-[22px]">style</span>
+                  <h2 id="form-title" class="text-sm font-bold text-stone-800">افزودن ویژگی جدید</h2>
+                </div>
+              </div>
+
+              <form id="attribute-form" onsubmit="event.preventDefault(); alert('ویژگی جدید با موفقیت ثبت شد!');" class="space-y-4">
+                <!-- 1. Attribute Name Field -->
+                <div>
+                  <label for="attr-name" class="block text-xs font-bold text-stone-700 mb-1.5">
+                    نام ویژگی <span class="text-rose-500">*</span>
+                  </label>
+                  <input type="text" id="attr-name" required placeholder="مثلاً: جنس پارچه، نوع آستر یا کشور سازنده" value="" oninput="updateSlug(this.value)" class="w-full px-3.5 py-2.5 text-xs rounded-xl bg-stone-50 border border-stone-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white text-stone-800 placeholder-stone-400 shadow-sm transition">
+                </div>
+
+                <!-- 2. Slug Field -->
+                <div>
+                  <div class="flex justify-between items-center mb-1.5">
+                    <label for="attr-slug" class="block text-xs font-bold text-stone-700">
+                      نامک (Slug)
+                    </label>
+                    <span class="text-[10px] text-stone-400 font-mono dir-ltr">URL-friendly</span>
+                  </div>
+                  <div class="flex items-center bg-stone-50 border border-stone-200 rounded-xl px-3 py-1 shadow-sm focus-within:ring-2 focus-within:ring-brand-500 focus-within:bg-white">
+                    <span class="text-[10px] text-stone-400 font-mono dir-ltr select-none">ezmart.ir/attribute/</span>
+                    <input type="text" id="attr-slug" placeholder="fabric-type" value="" class="w-full py-1.5 px-1 bg-transparent font-mono text-xs text-stone-700 dir-ltr focus:outline-none">
+                  </div>
+                </div>
+
+                <!-- 3. Display Type Selection -->
+                <div>
+                  <label class="block text-xs font-bold text-stone-700 mb-1.5">
+                    نوع نمایش (Type) <span class="text-rose-500">*</span>
+                  </label>
+                  <div class="grid grid-cols-3 gap-2">
+                    <label class="cursor-pointer">
+                      <input type="radio" name="display-type" value="text" checked class="peer sr-only">
+                      <div class="p-2.5 rounded-xl border border-stone-200 bg-stone-50 text-center peer-checked:border-brand-500 peer-checked:bg-brand-50/50 peer-checked:text-brand-600 transition shadow-sm flex flex-col items-center gap-1">
+                        <span class="material-symbols-outlined text-[18px]">font_download</span>
+                        <span class="text-[11px] font-bold">دکمه‌ای / متنی</span>
+                      </div>
+                    </label>
+                    <label class="cursor-pointer">
+                      <input type="radio" name="display-type" value="color" class="peer sr-only">
+                      <div class="p-2.5 rounded-xl border border-stone-200 bg-stone-50 text-center peer-checked:border-brand-500 peer-checked:bg-brand-50/50 peer-checked:text-brand-600 transition shadow-sm flex flex-col items-center gap-1">
+                        <span class="material-symbols-outlined text-[18px]">palette</span>
+                        <span class="text-[11px] font-bold">رنگی (Swatch)</span>
+                      </div>
+                    </label>
+                    <label class="cursor-pointer">
+                      <input type="radio" name="display-type" value="dropdown" class="peer sr-only">
+                      <div class="p-2.5 rounded-xl border border-stone-200 bg-stone-50 text-center peer-checked:border-brand-500 peer-checked:bg-brand-50/50 peer-checked:text-brand-600 transition shadow-sm flex flex-col items-center gap-1">
+                        <span class="material-symbols-outlined text-[18px]">arrow_drop_down_circle</span>
+                        <span class="text-[11px] font-bold">کشویی (Select)</span>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- 4. Quick Add Terms (Initial Values) -->
+                <div>
+                  <div class="flex justify-between items-center mb-1.5">
+                    <label for="attr-terms" class="block text-xs font-bold text-stone-700">
+                      مقادیر اولیه (Terms)
+                    </label>
+                    <span class="text-[10px] text-stone-400">جداسازی با ویرگول</span>
+                  </div>
+                  <textarea id="attr-terms" rows="3" placeholder="مثلاً: پشم فوتر، کتان، لینن، ابریشم" class="w-full p-3 text-xs rounded-xl bg-stone-50 border border-stone-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white text-stone-800 placeholder-stone-400 shadow-sm resize-none"></textarea>
+                </div>
+
+                <!-- Submit CTA Button -->
+                <div class="pt-2">
+                  <button type="submit" class="w-full py-3 px-4 bg-brand-500 hover:bg-brand-600 active:bg-brand-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 transition shadow-md shadow-brand-500/20 cursor-pointer">
+                    <span class="material-symbols-outlined text-[18px]">check_circle</span>
+                    <span>ایجاد ویژگی جدید</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- LEFT COLUMN: Attributes List Table (col-span-12 lg:col-span-8 matching tags page width) -->
+            <div class="col-span-12 lg:col-span-8 bg-white rounded-2xl p-5 border border-stone-100 shadow-sm">
+              
+              <!-- Table Controls Header -->
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-stone-100">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-stone-600 text-[20px]">format_list_bulleted</span>
+                  <h2 class="text-sm font-bold text-stone-800">لیست ویژگی‌ها</h2>
+                  <span class="px-2 py-0.5 rounded-full bg-stone-100 text-stone-600 text-[10px] font-bold">۸ مورد</span>
+                </div>
+
+                <div class="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+                  <!-- Search live -->
+                  <div class="relative w-48 sm:w-56">
+                    <input class="w-full pr-8 pl-3 py-1.5 text-[11px] rounded-lg bg-stone-50 border border-stone-200 focus:outline-none focus:ring-1 focus:ring-brand-500" placeholder="جستجوی ویژگی..." type="text"/>
+                    <div class="absolute inset-y-0 right-0 pr-2.5 flex items-center pointer-events-none text-stone-400">
+                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                    </div>
+                  </div>
+
+                  <!-- Filter Dropdown -->
+                  <div class="relative inline-block text-right">
+                    <button type="button" onclick="toggleFilterDropdown()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-stone-50 border border-stone-200 text-stone-700 hover:bg-stone-100 font-medium text-[11px] transition shadow-sm">
+                      <span class="material-symbols-outlined text-[16px]">filter_list</span>
+                      <span>فیلتر و مرتب‌سازی</span>
+                      <span class="material-symbols-outlined text-[14px]">expand_more</span>
+                    </button>
+                    <div id="filter-dropdown-menu" class="hidden absolute left-0 mt-2 w-52 rounded-xl bg-white shadow-lg border border-stone-100 py-1.5 z-30 text-right">
+                      <div class="px-4 py-2 text-[10px] font-bold text-stone-400 border-b border-stone-100 cursor-default select-none flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[14px]">tune</span>
+                        <span>فیلتر بر اساس</span>
+                      </div>
+                      <a href="#" onclick="alert('فیلتر: بیشترین استفاده'); toggleFilterDropdown(); return false;" class="flex items-center gap-2 px-4 py-2 text-xs font-medium text-stone-700 hover:bg-stone-50 transition">
+                        <span class="material-symbols-outlined text-[16px] text-amber-500">local_fire_department</span>
+                        <span>بیشترین استفاده</span>
+                      </a>
+                      <a href="#" onclick="alert('فیلتر: کمترین استفاده'); toggleFilterDropdown(); return false;" class="flex items-center gap-2 px-4 py-2 text-xs font-medium text-stone-700 hover:bg-stone-50 transition">
+                        <span class="material-symbols-outlined text-[16px] text-stone-400">trending_down</span>
+                        <span>کمترین استفاده</span>
+                      </a>
+                      <a href="#" onclick="alert('فیلتر: نوع متنی'); toggleFilterDropdown(); return false;" class="flex items-center gap-2 px-4 py-2 text-xs font-medium text-stone-700 hover:bg-stone-50 transition">
+                        <span class="material-symbols-outlined text-[16px] text-stone-500">font_download</span>
+                        <span>نوع متنی / دکمه‌ای</span>
+                      </a>
+                      <a href="#" onclick="alert('فیلتر: نوع رنگی'); toggleFilterDropdown(); return false;" class="flex items-center gap-2 px-4 py-2 text-xs font-medium text-stone-700 hover:bg-stone-50 transition">
+                        <span class="material-symbols-outlined text-[16px] text-stone-500">palette</span>
+                        <span>نوع رنگی (Color Swatch)</span>
+                      </a>
+                      <a href="#" onclick="alert('فیلتر: نوع کشویی'); toggleFilterDropdown(); return false;" class="flex items-center gap-2 px-4 py-2 text-xs font-medium text-stone-700 hover:bg-stone-50 transition">
+                        <span class="material-symbols-outlined text-[16px] text-stone-500">arrow_drop_down_circle</span>
+                        <span>نوع کشویی (Dropdown)</span>
+                      </a>
+                      <a href="#" onclick="alert('فیلتر: جدیدترین'); toggleFilterDropdown(); return false;" class="flex items-center gap-2 px-4 py-2 text-xs font-medium text-stone-700 hover:bg-stone-50 transition">
+                        <span class="material-symbols-outlined text-[16px] text-stone-500">schedule</span>
+                        <span>جدیدترین</span>
+                      </a>
+                      <a href="#" onclick="alert('فیلتر: قدیمی‌ترین'); toggleFilterDropdown(); return false;" class="flex items-center gap-2 px-4 py-2 text-xs font-medium text-stone-700 hover:bg-stone-50 transition">
+                        <span class="material-symbols-outlined text-[16px] text-stone-400">history</span>
+                        <span>قدیمی‌ترین</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Attributes Table with Horizontal Scroll Support -->
+              <div class="overflow-x-auto no-scrollbar">
+                <table class="w-full text-right text-xs border-collapse min-w-[850px]">
+                  <thead>
+                    <tr class="text-stone-400 border-b border-stone-100 font-medium">
+                      <th class="pb-3 pr-2 w-8"><input type="checkbox" id="select-all" class="rounded border-stone-300 text-brand-500 focus:ring-brand-500"></th>
+                      <th class="pb-3 font-medium w-20">شناسه</th>
+                      <th class="pb-3 font-medium w-36">نام ویژگی</th>
+                      <th class="pb-3 font-medium w-32">نامک (Slug)</th>
+                      <th class="pb-3 font-medium w-28 text-center">نوع نمایش</th>
+                      <th class="pb-3 font-medium w-56">مقادیر (Terms)</th>
+                      <th class="pb-3 font-medium text-center w-20">محصولات</th>
+                      <th class="pb-3 font-medium text-center w-20">وضعیت</th>
+                      <th class="pb-3 font-medium text-left pl-2 w-24">عملیات</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-stone-50">
+                    
+                    <!-- ROW 1 -->
+                    <tr class="hover:bg-amber-50/40 transition group">
+                      <td class="py-3 pr-2"><input type="checkbox" class="rounded border-stone-300 text-brand-500 focus:ring-brand-500"></td>
+                      <td class="py-3 font-mono text-stone-400 text-[11px]">#ATT-201</td>
+                      <td class="py-3 font-bold text-stone-900">جنس پارچه</td>
+                      <td class="py-3 font-mono text-[11px] text-stone-400 dir-ltr text-right">fabric-type</td>
+                      <td class="py-3 text-center">
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-stone-100 text-stone-700 inline-flex items-center gap-1">
+                          <span class="material-symbols-outlined text-[12px]">font_download</span> متنی
+                        </span>
+                      </td>
+                      <td class="py-3">
+                        <div class="flex flex-wrap items-center gap-1">
+                          <span class="px-2 py-0.5 rounded bg-stone-100 text-stone-700 text-[10px] font-medium">پشم فوتر</span>
+                          <span class="px-2 py-0.5 rounded bg-stone-100 text-stone-700 text-[10px] font-medium">کتان</span>
+                          <span class="px-2 py-0.5 rounded bg-stone-100 text-stone-700 text-[10px] font-medium">لینن</span>
+                          <span class="px-2 py-0.5 rounded bg-stone-100 text-stone-700 text-[10px] font-medium">ابریشم</span>
+                          <button type="button" onclick="alert('افزودن مقدار جدید به جنس پارچه');" class="px-1.5 py-0.5 rounded bg-brand-50 text-brand-600 hover:bg-brand-100 text-[10px] font-bold border border-brand-200 transition" title="افزودن مقدار جدید">+ جدید</button>
+                        </div>
+                      </td>
+                      <td class="py-3 text-center">
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">۱۴۲ کالا</span>
+                      </td>
+                      <!-- Status Toggle Column -->
+                      <td class="py-3 text-center">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                          <input type="checkbox" checked class="sr-only peer">
+                          <div class="w-8 h-4 bg-stone-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-[-16px] peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-brand-500"></div>
+                        </label>
+                      </td>
+                      <!-- Operations Column -->
+                      <td class="py-3 text-left pl-2">
+                        <div class="flex items-center gap-1 justify-end">
+                          <button type="button" class="p-1 rounded hover:bg-stone-200/60 text-stone-600 transition" title="ویرایش"><span class="material-symbols-outlined text-[16px]">edit</span></button>
+                          <button type="button" class="p-1 rounded hover:bg-rose-50 text-rose-600 transition" title="حذف"><span class="material-symbols-outlined text-[16px]">delete</span></button>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <!-- ROW 2 -->
+                    <tr class="hover:bg-amber-50/40 transition group">
+                      <td class="py-3 pr-2"><input type="checkbox" class="rounded border-stone-300 text-brand-500 focus:ring-brand-500"></td>
+                      <td class="py-3 font-mono text-stone-400 text-[11px]">#ATT-202</td>
+                      <td class="py-3 font-bold text-stone-900">رنگ لباس</td>
+                      <td class="py-3 font-mono text-[11px] text-stone-400 dir-ltr text-right">color-swatch</td>
+                      <td class="py-3 text-center">
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200 inline-flex items-center gap-1">
+                          <span class="material-symbols-outlined text-[12px]">palette</span> رنگی
+                        </span>
+                      </td>
+                      <td class="py-3">
+                        <div class="flex flex-wrap items-center gap-1.5">
+                          <span class="w-3.5 h-3.5 rounded-full bg-stone-900 border border-stone-200 shadow-sm" title="مشکی"></span>
+                          <span class="w-3.5 h-3.5 rounded-full bg-amber-700 border border-stone-200 shadow-sm" title="شتری"></span>
+                          <span class="w-3.5 h-3.5 rounded-full bg-stone-300 border border-stone-200 shadow-sm" title="طوسی"></span>
+                          <span class="w-3.5 h-3.5 rounded-full bg-emerald-800 border border-stone-200 shadow-sm" title="یشمی"></span>
+                          <button type="button" onclick="alert('افزودن رنگ جدید');" class="px-1.5 py-0.5 rounded bg-brand-50 text-brand-600 hover:bg-brand-100 text-[10px] font-bold border border-brand-200 transition" title="افزودن رنگ جدید">+ جدید</button>
+                        </div>
+                      </td>
+                      <td class="py-3 text-center">
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">۱۹۸ کالا</span>
+                      </td>
+                      <!-- Status Toggle Column -->
+                      <td class="py-3 text-center">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                          <input type="checkbox" checked class="sr-only peer">
+                          <div class="w-8 h-4 bg-stone-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-[-16px] peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-brand-500"></div>
+                        </label>
+                      </td>
+                      <!-- Operations Column -->
+                      <td class="py-3 text-left pl-2">
+                        <div class="flex items-center gap-1 justify-end">
+                          <button type="button" class="p-1 rounded hover:bg-stone-200/60 text-stone-600 transition" title="ویرایش"><span class="material-symbols-outlined text-[16px]">edit</span></button>
+                          <button type="button" class="p-1 rounded hover:bg-rose-50 text-rose-600 transition" title="حذف"><span class="material-symbols-outlined text-[16px]">delete</span></button>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <!-- ROW 3 -->
+                    <tr class="hover:bg-amber-50/40 transition group">
+                      <td class="py-3 pr-2"><input type="checkbox" class="rounded border-stone-300 text-brand-500 focus:ring-brand-500"></td>
+                      <td class="py-3 font-mono text-stone-400 text-[11px]">#ATT-203</td>
+                      <td class="py-3 font-bold text-stone-900">نوع آستر</td>
+                      <td class="py-3 font-mono text-[11px] text-stone-400 dir-ltr text-right">lining-type</td>
+                      <td class="py-3 text-center">
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-stone-100 text-stone-700 inline-flex items-center gap-1">
+                          <span class="material-symbols-outlined text-[12px]">arrow_drop_down_circle</span> کشویی
+                        </span>
+                      </td>
+                      <td class="py-3">
+                        <div class="flex flex-wrap items-center gap-1">
+                          <span class="px-2 py-0.5 rounded bg-stone-100 text-stone-700 text-[10px] font-medium">ساتن ابریشمی</span>
+                          <span class="px-2 py-0.5 rounded bg-stone-100 text-stone-700 text-[10px] font-medium">ژاکارد</span>
+                          <span class="px-2 py-0.5 rounded bg-stone-100 text-stone-700 text-[10px] font-medium">بدون آستر</span>
+                          <button type="button" onclick="alert('افزودن مقدار جدید');" class="px-1.5 py-0.5 rounded bg-brand-50 text-brand-600 hover:bg-brand-100 text-[10px] font-bold border border-brand-200 transition" title="افزودن مقدار جدید">+ جدید</button>
+                        </div>
+                      </td>
+                      <td class="py-3 text-center">
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-stone-100 text-stone-600">۳۵ کالا</span>
+                      </td>
+                      <!-- Status Toggle Column -->
+                      <td class="py-3 text-center">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                          <input type="checkbox" checked class="sr-only peer">
+                          <div class="w-8 h-4 bg-stone-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-[-16px] peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-brand-500"></div>
+                        </label>
+                      </td>
+                      <!-- Operations Column -->
+                      <td class="py-3 text-left pl-2">
+                        <div class="flex items-center gap-1 justify-end">
+                          <button type="button" class="p-1 rounded hover:bg-stone-200/60 text-stone-600 transition" title="ویرایش"><span class="material-symbols-outlined text-[16px]">edit</span></button>
+                          <button type="button" class="p-1 rounded hover:bg-rose-50 text-rose-600 transition" title="حذف"><span class="material-symbols-outlined text-[16px]">delete</span></button>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <!-- ROW 4 -->
+                    <tr class="hover:bg-amber-50/40 transition group">
+                      <td class="py-3 pr-2"><input type="checkbox" class="rounded border-stone-300 text-brand-500 focus:ring-brand-500"></td>
+                      <td class="py-3 font-mono text-stone-400 text-[11px]">#ATT-204</td>
+                      <td class="py-3 font-bold text-stone-900">نوع شستشو و نگهداری</td>
+                      <td class="py-3 font-mono text-[11px] text-stone-400 dir-ltr text-right">washing-care</td>
+                      <td class="py-3 text-center">
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-stone-100 text-stone-700 inline-flex items-center gap-1">
+                          <span class="material-symbols-outlined text-[12px]">font_download</span> متنی
+                        </span>
+                      </td>
+                      <td class="py-3">
+                        <div class="flex flex-wrap items-center gap-1">
+                          <span class="px-2 py-0.5 rounded bg-stone-100 text-stone-700 text-[10px] font-medium">فقط خشک‌شویی</span>
+                          <span class="px-2 py-0.5 rounded bg-stone-100 text-stone-700 text-[10px] font-medium">شستشو با آب ۳۰ درجه</span>
+                          <button type="button" onclick="alert('افزودن مقدار جدید');" class="px-1.5 py-0.5 rounded bg-brand-50 text-brand-600 hover:bg-brand-100 text-[10px] font-bold border border-brand-200 transition" title="افزودن مقدار جدید">+ جدید</button>
+                        </div>
+                      </td>
+                      <td class="py-3 text-center">
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-stone-100 text-stone-600">۸۸ کالا</span>
+                      </td>
+                      <!-- Status Toggle Column -->
+                      <td class="py-3 text-center">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                          <input type="checkbox" checked class="sr-only peer">
+                          <div class="w-8 h-4 bg-stone-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-[-16px] peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-brand-500"></div>
+                        </label>
+                      </td>
+                      <!-- Operations Column -->
+                      <td class="py-3 text-left pl-2">
+                        <div class="flex items-center gap-1 justify-end">
+                          <button type="button" class="p-1 rounded hover:bg-stone-200/60 text-stone-600 transition" title="ویرایش"><span class="material-symbols-outlined text-[16px]">edit</span></button>
+                          <button type="button" class="p-1 rounded hover:bg-rose-50 text-rose-600 transition" title="حذف"><span class="material-symbols-outlined text-[16px]">delete</span></button>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <!-- ROW 5 (Warning Unused Attribute) -->
+                    <tr class="hover:bg-amber-50/40 transition group bg-rose-50/30">
+                      <td class="py-3 pr-2"><input type="checkbox" class="rounded border-stone-300 text-brand-500 focus:ring-brand-500"></td>
+                      <td class="py-3 font-mono text-stone-400 text-[11px]">#ATT-205</td>
+                      <td class="py-3 font-bold text-stone-900">کشور سازنده پارچه</td>
+                      <td class="py-3 font-mono text-[11px] text-stone-400 dir-ltr text-right">origin-country</td>
+                      <td class="py-3 text-center">
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-stone-100 text-stone-700 inline-flex items-center gap-1">
+                          <span class="material-symbols-outlined text-[12px]">arrow_drop_down_circle</span> کشویی
+                        </span>
+                      </td>
+                      <td class="py-3">
+                        <div class="flex flex-wrap items-center gap-1">
+                          <button type="button" onclick="alert('افزودن مقدار جدید');" class="px-1.5 py-0.5 rounded bg-brand-50 text-brand-600 hover:bg-brand-100 text-[10px] font-bold border border-brand-200 transition" title="افزودن مقدار جدید">+ جدید</button>
+                        </div>
+                      </td>
+                      <td class="py-3 text-center">
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700">۰ کالا</span>
+                      </td>
+                      <!-- Status Toggle Column (Inactive) -->
+                      <td class="py-3 text-center">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                          <input type="checkbox" class="sr-only peer">
+                          <div class="w-8 h-4 bg-stone-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-[-16px] peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-brand-500"></div>
+                        </label>
+                      </td>
+                      <!-- Operations Column -->
+                      <td class="py-3 text-left pl-2">
+                        <div class="flex items-center gap-1 justify-end">
+                          <button type="button" class="p-1 rounded hover:bg-stone-200/60 text-stone-600 transition" title="ویرایش"><span class="material-symbols-outlined text-[16px]">edit</span></button>
+                          <button type="button" class="p-1 rounded hover:bg-rose-50 text-rose-600 transition" title="حذف"><span class="material-symbols-outlined text-[16px]">delete</span></button>
+                        </div>
+                      </td>
+                    </tr>
+
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Pagination Footer -->
+              <div class="mt-4 pt-3 border-t border-stone-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-stone-500 bg-stone-50/50 p-3 rounded-xl">
+                <div class="flex items-center gap-2">
+                  <span class="text-[11px] font-medium text-stone-600">نمایش <b>۱</b> تا <b>۵</b> از <b>۸</b> ویژگی</span>
+                </div>
+                <div class="flex items-center gap-1.5" dir="rtl">
+                  <button type="button" class="h-8 px-3 rounded-lg border border-stone-200 bg-white hover:bg-stone-100 text-stone-600 font-medium flex items-center gap-1 transition shadow-sm disabled:opacity-40" disabled>
+                    <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                    <span>قبلی</span>
+                  </button>
+                  <button type="button" class="w-8 h-8 rounded-lg bg-brand-500 text-white font-bold shadow-sm shadow-brand-500/20">۱</button>
+                  <button type="button" class="w-8 h-8 rounded-lg border border-stone-200 bg-white hover:bg-stone-100 text-stone-700 font-medium transition shadow-sm">۲</button>
+                  <button type="button" class="h-8 px-3 rounded-lg border border-stone-200 bg-white hover:bg-stone-100 text-stone-600 font-medium flex items-center gap-1 transition shadow-sm">
+                    <span>بعدی</span>
+                    <span class="material-symbols-outlined text-[16px]">chevron_left</span>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+        <!-- ============ END: ATTRIBUTES PAGE CONTENT ============ -->
+
+      </main>
+    </div>
+
+    <!-- JavaScript Handlers -->
+    <script>
+      // Toggle Bulk Dropdown
+      function toggleBulkDropdown() {
+        const menu = document.getElementById('bulk-dropdown-menu');
+        menu.classList.toggle('hidden');
+        document.getElementById('filter-dropdown-menu').classList.add('hidden');
+        document.getElementById('bulk-display-submenu').classList.add('hidden');
+      }
+
+      // Toggle Bulk Sub-Menu for Display Type
+      function toggleBulkSubMenu(e) {
+        e.stopPropagation();
+        const submenu = document.getElementById('bulk-display-submenu');
+        submenu.classList.toggle('hidden');
+      }
+
+      // Toggle Filter Dropdown
+      function toggleFilterDropdown() {
+        const menu = document.getElementById('filter-dropdown-menu');
+        menu.classList.toggle('hidden');
+        document.getElementById('bulk-dropdown-menu').classList.add('hidden');
+        document.getElementById('bulk-display-submenu').classList.add('hidden');
+      }
+
+      // Close dropdowns when clicking outside
+      document.addEventListener('click', function(e) {
+        const bulkMenu = document.getElementById('bulk-dropdown-menu');
+        const filterMenu = document.getElementById('filter-dropdown-menu');
+        
+        if (!e.target.closest('[onclick="toggleBulkDropdown()"]') && bulkMenu && !bulkMenu.contains(e.target)) {
+          bulkMenu.classList.add('hidden');
+          document.getElementById('bulk-display-submenu').classList.add('hidden');
+        }
+        if (!e.target.closest('[onclick="toggleFilterDropdown()"]') && filterMenu && !filterMenu.contains(e.target)) {
+          filterMenu.classList.add('hidden');
+        }
+      });
+
+      // Accordion Menu Toggle
+      function toggleAccordion(menuId, iconId) {
+        const menu = document.getElementById(menuId);
+        const icon = document.getElementById(iconId);
+        const isHidden = menu.classList.toggle('hidden');
+        icon.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(180deg)';
+      }
+
+      // Auto Generate Slug from Name
+      function updateSlug(val) {
+        const slugInput = document.getElementById('attr-slug');
+        if (val.trim() === '') {
+          slugInput.value = '';
+          return;
+        }
+        const slug = val
+          .toLowerCase()
+          .trim()
+          .replace(/[\s\s]+/g, '-')
+          .replace(/[^\w\u0600-\u06FF\-]/g, '');
+        slugInput.value = slug;
+      }
+
+      // Focus Form Handler
+      function focusForm() {
+        document.getElementById('attr-name').focus();
+        document.getElementById('attribute-form').scrollIntoView({ behavior: 'smooth' });
+      }
+
+      // Select All Checkbox Handler
+      document.addEventListener('DOMContentLoaded', () => {
+        const selectAll = document.getElementById('select-all');
+        const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+        if(selectAll) {
+          selectAll.addEventListener('change', () => {
+            checkboxes.forEach(cb => cb.checked = selectAll.checked);
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
